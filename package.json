@@ -29,7 +29,7 @@
     "react-scripts": "3.4.1",
     "semantic-ui-react": "^0.88.2"
   },
-  "proxy": "api.example.com",
+  "proxy": "http://api.example.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
