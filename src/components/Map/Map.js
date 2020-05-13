@@ -5,6 +5,7 @@ import Icon from '@material-ui/core/Icon';
 import PathNav from '../PathNav/PathNav';
 import ConfirmNav from '../ConfirmNav/ConfirmNav';
 
+
 import './Map.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -45,7 +46,10 @@ export class MapContainer extends Component {
             confirmBtnFlag: false,
 
         };
+        
     }
+
+    
 
     /*state = {
         showingInfoWindow: false,  //Hides or the shows the infoWindow
@@ -104,7 +108,6 @@ export class MapContainer extends Component {
             });
         };
         console.log(this.state.currentLocation.lat + " " + this.state.currentLocation.lng);
-
     }
 
     UpdateConfirmBtn = () => {

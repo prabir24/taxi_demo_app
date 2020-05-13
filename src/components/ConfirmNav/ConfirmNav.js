@@ -46,7 +46,6 @@ class ConfirmNav extends Component {
                             <br />
                             <Label>Total Price (Approx.): ~ SEK</Label>
                             <Divider />
-                            <br />
                         </div>
 
                         <div className="btns">

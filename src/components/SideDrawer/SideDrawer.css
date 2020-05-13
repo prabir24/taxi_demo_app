@@ -46,7 +46,7 @@
 }
 
 .side-drawer .userInfo {
-    height: 40%;
+    height: 30%;
     background: rgba(20, 20, 20, 0.808);
     position: fixed;
     width: 100%;
@@ -63,7 +63,7 @@
 }
 
 .userName {
-    margin-left: 2.5rem;
+    margin-left: 1.5rem;
     margin-top: 2.5rem;
     color: white;
 }

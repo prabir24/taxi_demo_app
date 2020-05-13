@@ -64,3 +64,9 @@
         margin-left: 0;
     }
 }
+
+.accountIcon2 {
+    
+    transform: scale(1);
+    color: white;
+}
