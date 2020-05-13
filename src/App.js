@@ -119,7 +119,7 @@ class App extends Component {
                 <Route path="/loginForPassenger">
                   <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/loginForPassenger"} />
                   <main style={{ marginTop: '60px' }}>
-                    <MapContainer apiKey="xxx" />
+                    <MapContainer apiKey="AIzaSyDnNcsDErM8irLB6OvAEYjzHx0kTWzvmkc" />
                   </main>
                 </Route>
                 <Route path="/loginForDriver" >

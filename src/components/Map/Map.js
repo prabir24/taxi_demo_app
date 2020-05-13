@@ -179,7 +179,9 @@ export class MapContainer extends Component {
                 }
             };
             //let driverRef = fire.firestore().collection('driverLoc').add( data);
-            fire.firestore().collection('PassLoc').doc('PA').set(data);
+            if(this.state.driverFlag) {
+                fire.firestore().collection('PassLoc').doc('PA').set(data);
+            }
         });
     }
 

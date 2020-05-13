@@ -90,6 +90,9 @@ class DriverHome extends Component {
         setInterval(() => {
             console.log('Interval triggered');
             this.updateCurrentLocation();
+        }, 10000);
+        setInterval(() => {
+            console.log('Interval triggered for Passengers');
             this.checkForPassengers();
         }, 10000);
 
@@ -104,7 +107,7 @@ class DriverHome extends Component {
         passRef.get()
             .then(doc => {
                 if (!doc.exists) {
-                    console.log('No such document!');
+                    console.log('No such passenger document!');
                     this.setState({
                         passFlag: false,
                         pickUp: {
@@ -129,13 +132,14 @@ class DriverHome extends Component {
                             lng: doc.data().dropOff.lng
                         },
                     });
+                    this.speak("New Ride.. Please Check");
+                    fire.firestore().collection('PassLoc').doc('PA').delete();
                 }
             })
             .catch(err => {
                 console.log('Error getting document', err);
             });
         //fire.firestore().collection('driverLoc').doc('DL').delete();
-        this.speak("Intruder Alert");
     }
 
     render() {
@@ -153,7 +157,7 @@ class DriverHome extends Component {
             <div className="driverHome-1">
                 {this.state.passFlag ?
                     (
-                        <div>
+                        <div className="googleMaps">
                             <Map
                                 google={this.props.google}
                                 zoom={14}
@@ -168,14 +172,14 @@ class DriverHome extends Component {
                                     name="End"
                                     color="red"
                                     draggable={false}
-                                    animation={this.props.google.maps.Animation.BOUNCE}
+                                    //animation={this.props.google.maps.Animation.DROP}
                                     icon={iconList.icon4}
                                 /> : null}
                                 {this.state.passFlag ? <Marker
                                     position={this.state.pickUp}
                                     name="Start"
                                     draggable={false}
-                                    animation={this.props.google.maps.Animation.BOUNCE}
+                                    //animation={this.props.google.maps.Animation.DROP}
                                     icon={iconList.icon2}
                                 /> : null}
 

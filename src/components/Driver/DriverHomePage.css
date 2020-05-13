@@ -7,3 +7,18 @@
     flex-direction: column;
     justify-content: center;
 }
+
+a[href^="http://maps.google.com/maps"]{display:none !important}
+a[href^="https://maps.google.com/maps"]{display:none !important}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+    display:none;
+}
+.gmnoprint div {
+    background:none !important;
+}
+
+.googleMaps {
+    z-index: 100;
+    height: calc(100% - 80px)
+}
