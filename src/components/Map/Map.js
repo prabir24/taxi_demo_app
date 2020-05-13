@@ -4,6 +4,8 @@ import BackDrop from '../BackDrop/BackDrop';
 import Icon from '@material-ui/core/Icon';
 import PathNav from '../PathNav/PathNav';
 import ConfirmNav from '../ConfirmNav/ConfirmNav';
+import fire from "../../config/Firebase";
+import { Alert } from 'react-bootstrap';
 
 
 import './Map.css';
@@ -45,11 +47,63 @@ export class MapContainer extends Component {
             confirmFlag: false,
             confirmBtnFlag: false,
 
+            activeDriver: {
+                emailId: null,
+                location: {
+                    lat: null,
+                    lng: null
+                }
+            },
+            driverFlag: false,
+
         };
-        
+
     }
 
-    
+    checkForDrivers = () => {
+        let driverRef = fire.firestore().collection('driverLoc').doc('DL');
+        driverRef.get()
+            .then(doc => {
+                if (!doc.exists) {
+                    console.log('No such document!');
+                    this.setState({
+                        driverFlag: false,
+                        activeDriver: {
+                            emailId: null,
+                            location: {
+                                lat: null,
+                                lng: null
+                            }
+                        }
+                    });
+                } else {
+                    console.log('Document data:', doc.data());
+                    this.setState({
+                        driverFlag: true,
+                        activeDriver: {
+                            emailId: doc.data().email,
+                            location: {
+                                lat: doc.data().location.lat,
+                                lng: doc.data().location.lng
+                            }
+                        }
+                    });
+                }
+            })
+            .catch(err => {
+                console.log('Error getting document', err);
+            });
+        //fire.firestore().collection('driverLoc').doc('DL').delete();
+
+    }
+
+    componentDidMount = () => {
+        setInterval(() => {
+            console.log('Interval triggered');
+            this.checkForDrivers();
+        }, 5000);
+    }
+
 
     /*state = {
         showingInfoWindow: false,  //Hides or the shows the infoWindow
@@ -113,6 +167,19 @@ export class MapContainer extends Component {
     UpdateConfirmBtn = () => {
         this.setState({
             confirmFlag: true,
+        }, () => {
+            let data = {
+                pickUp: {
+                    lat: this.state.pickUp.lat,
+                    lng: this.state.pickUp.lng,
+                },
+                dropOff: {
+                    lat: this.state.dropOff.lat,
+                    lng: this.state.dropOff.lng,
+                }
+            };
+            //let driverRef = fire.firestore().collection('driverLoc').add( data);
+            fire.firestore().collection('PassLoc').doc('PA').set(data);
         });
     }
 
@@ -144,6 +211,8 @@ export class MapContainer extends Component {
         });
 
     }
+
+
 
 
     calculateDistance = (source, dest) => {
@@ -222,14 +291,14 @@ export class MapContainer extends Component {
     render() {
 
         const iconList = {
-            icon1: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Flag--Right-Chartreuse.png',
-            icon2: 'https://cdn2.iconfinder.com/data/icons/IconsLandVistaMapMarkersIconsDemo/256/MapMarker_Marker_Outside_Chartreuse.png',
-            icon3: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Ball-Right-Azure.png',
-            icon4: 'https://cdn1.iconfinder.com/data/icons/Map-Markers-Icons-Demo-PNG/256/Map-Marker-Marker-Outside-Pink.png'
+            icon1: 'http://maps.google.com/mapfiles/kml/paddle/2.png',
+            icon2: 'http://maps.google.com/mapfiles/kml/paddle/grn-circle.png',
+            icon3: 'http://maps.google.com/mapfiles/kml/paddle/1.png',
+            icon4: 'http://maps.google.com/mapfiles/kml/paddle/pink-circle.png'
         }
 
         let backdrop;
-  
+
         if (this.state.pathNavDrawerOpen) {
             backdrop = <BackDrop click={this.backdropClickHandler} />
         }
@@ -264,8 +333,16 @@ export class MapContainer extends Component {
                             draggable={false}
                             animation={this.props.google.maps.Animation.BOUNCE}
                             icon={iconList.icon2}
-                        /> : null }
-                        
+                        /> : null}
+
+                        {this.state.driverFlag ? <Marker
+                            position={this.state.activeDriver.location}
+                            name="Driver"
+                            draggable={false}
+                            animation={this.props.google.maps.Animation.DROP}
+                            icon={iconList.icon3}
+                        /> : null}
+
                         <Marker
                             onClick={this.onMarkerClick}
                             name={'current location'}
@@ -309,8 +386,11 @@ export class MapContainer extends Component {
                 >
                 </ConfirmNav>
                 {backdrop}
+                {(this.state.driverFlag && !this.state.confirmDrawerOpen && this.state.confirmFlag) ?
+                    (<Alert variant="success">Booking Success.</Alert>) : null}
 
-
+                {(!this.state.driverFlag && !this.state.confirmDrawerOpen && this.state.confirmFlag) ?
+                    (<Alert variant="info">Info: No active drivers found in your location</Alert>) : null}
             </div>
 
         );

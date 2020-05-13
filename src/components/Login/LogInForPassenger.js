@@ -17,11 +17,21 @@ class LogInForPassanger extends Component {
   }
 
   login(e) {
+
     e.preventDefault();
     fire
       .auth()
       .signInWithEmailAndPassword(this.state.email, this.state.password)
       .then((u) => {
+        var currUser = fire.auth().currentUser;
+        currUser.updateProfile({
+          displayName: "passenger",
+        }).then(function () {
+          console.log("Update successful");
+        }).catch(function (error) {
+          console.log(error);
+        });
+
         window.alert("Successfully logged in!");
       })
       .catch((error) => {

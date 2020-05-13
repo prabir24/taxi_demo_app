@@ -13,7 +13,6 @@ class ConfirmNav extends Component {
         this.state = {
             distance: 0,
             price: 0,
-            driverFlag: false
         };
     }
 

@@ -8,9 +8,7 @@ import fire from "../../config/Firebase";
 
 import './SideDrawer.css';
 
-function logout() {
-    fire.auth().signOut();
-}
+
 
 const sideDrawer = props => {
     
@@ -18,6 +16,15 @@ const sideDrawer = props => {
     if(props.show) {
         drawerClasses = 'side-drawer open';
     }
+
+    function logout() {
+        fire.auth().signOut();
+        if(props.who === 'driver') {
+            fire.firestore().collection('driverLoc').doc('DL').delete();
+            console.log("Key deleted Successfully");
+        }
+    }
+
     return (
         <nav className={drawerClasses}>
             <div className="userInfo">

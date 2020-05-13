@@ -28,9 +28,10 @@ class App extends Component {
       user1: null,
       loggedIn: false,
       sideDrawerOpen: false,
+      who: false,
     };
+    
   }
-
 
   drawerToggleClickHandler = () => {
     this.setState((prevState) => {
@@ -42,17 +43,33 @@ class App extends Component {
     this.setState({ sideDrawerOpen: false })
   }
 
+ 
+
   componentDidMount() {
     this.authListener1();
+    
   }
+
   authListener1() {
     fire.auth().onAuthStateChanged((user) => {
       if (user) {
-        this.setState({ 
-          user1: user,
-          loggedIn: true, 
-        });
-        
+
+        var currUser = fire.auth().currentUser;
+        var name;
+        if (currUser != null) {
+          currUser.providerData.forEach(function (profile) {
+            console.log("Sign-in provider: " + profile.providerId);
+            console.log("  Provider-specific UID: " + profile.uid);
+            console.log("  Name: " + profile.displayName);
+            name = profile.displayName;
+
+          });
+        }
+        this.setState({
+              user1: user,
+              loggedIn: true,
+              who: name,
+            });
       } else {
         this.setState({
           user1: null,
@@ -74,19 +91,20 @@ class App extends Component {
       <div style={{ height: '100%' }}>
         <Router>
           <Route path="/">
-          <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/"}/>
+            <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/"} />
           </Route>
           <Route path="/" component={Home} exact />
           <Route path="/" component={SideDrawer} >
-            <SideDrawer show={this.state.sideDrawerOpen} 
-              drawerClickHandler={this.drawerToggleClickHandler} 
+            <SideDrawer show={this.state.sideDrawerOpen}
+              drawerClickHandler={this.drawerToggleClickHandler}
               loggedIn={this.state.loggedIn}
               emailId={this.state.loggedIn ? this.state.user1.email : "Not Logged In"}
-              />
+              who={this.state.who}
+            />
             {backdrop}
           </Route>
           <Route path="/userInfo" component={UserInfo} />
-          
+
           {(this.state.user1 === null) ? (
             <Fragment>
               <Route path="/loginForDriver"  >
@@ -99,17 +117,17 @@ class App extends Component {
           ) : (
               <Fragment>
                 <Route path="/loginForPassenger">
-                <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/loginForPassenger"}/>
+                  <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/loginForPassenger"} />
                   <main style={{ marginTop: '60px' }}>
                     <MapContainer apiKey="AIzaSyDnNcsDErM8irLB6OvAEYjzHx0kTWzvmkca" />
                   </main>
                 </Route>
                 <Route path="/loginForDriver" >
-                <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/loginForDriver"}/>
+                  <Toolbar drawerClickHandler={this.drawerToggleClickHandler} page={"/loginForDriver"} />
                   <main style={{ marginTop: '60px' }}>
-                    <DriverHome/>
+                    <DriverHome driver={this.state.user1.email} />
                   </main>
-          </Route>
+                </Route>
               </Fragment>
             )}
         </Router>
