@@ -11,6 +11,9 @@ import LogInForDriver from "./components/Login/LogInForDriver";
 import LogInForPassenger from "./components/Login/LogInForPassenger";
 import fire from "./config/Firebase";
 import DriverHome from './components/Driver/DriverHomePage';
+import AboutUs from "./components/aboutus/AboutUs";
+import History from "./components/history/History";
+import Contacts from "./components/contacts/Contacts";
 
 //import express from 'express';
 //import cors from 'cors';
@@ -104,6 +107,9 @@ class App extends Component {
             {backdrop}
           </Route>
           <Route path="/userInfo" component={UserInfo} />
+          <Route path="/aboutus" component={AboutUs} />
+          <Route path="/travelhistory" component={History} />
+          <Route path="/contacts" component={Contacts} />
 
           {(this.state.user1 === null) ? (
             <Fragment>

@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import { Link } from "react-router-dom";
 
 import '../SideDrawer/DrawerToggleButton';
 import './Toolbar.css';
@@ -26,11 +27,11 @@ class toolbar extends Component {
                     <div className="spacer" />
                     <div className="toolbar_navigation-items">
                         <ul>
-                            <li><a href="/">Travel History</a></li>
-                            <li><a href="/">About us</a></li>
-                            <li><a href="/">Contacts</a></li>
-                            <li><a href="/"><AccountCircleIcon className="accountIcon2" >
-                            </AccountCircleIcon></a></li>
+                            <li><Link to="/travelhistory">Travel History</Link></li>
+                            <li><Link to="/aboutus">About us</Link></li>
+                            <li><Link to="/contacts">Contacts</Link></li>
+                            <li><Link to="/userInfo"><AccountCircleIcon className="accountIcon2" >
+                            </AccountCircleIcon></Link></li>
                         </ul>
                     </div>
                 </nav>

@@ -35,7 +35,6 @@
     "react-webcam": "^5.0.1",
     "semantic-ui-react": "^0.88.2"
   },
-  "proxy": "http://api.example.com",
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",

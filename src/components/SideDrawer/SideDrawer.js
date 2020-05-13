@@ -8,8 +8,6 @@ import fire from "../../config/Firebase";
 
 import './SideDrawer.css';
 
-
-
 const sideDrawer = props => {
     
     let drawerClasses = 'side-drawer';
@@ -35,9 +33,11 @@ const sideDrawer = props => {
             </div>
             <Divider />
             <ul>
-                {props.loggedIn ? <li><a href="/">Travel History</a></li> : null}
-                <li><a href="/">About us</a></li>   
-                <li><a href="/">Contacts</a></li>
+                {props.loggedIn ? (
+                    <Link to="/travelhistory">Travel History</Link>
+                ) : null}
+                <Link to="/aboutus">About us</Link>   
+                <Link to="/contacts">Contacts</Link>
                 <Divider/>
                 {props.loggedIn ? <li><a href="/" onClick={logout}>Logout</a></li> : null}
             </ul>
